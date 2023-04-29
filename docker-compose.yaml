@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  mariadb:
+    image: "mariadb"
+    container_name: "mariadb1"
+    ports: 
+      - "3306:3306"
+    restart: unless-stopped
+    environment: 
+      - MARIADB_USER=admin
+      - MARIADB_PASSWORD=admin
+      - MARIADB_ROOT_PASSWORD=root
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./init.sql:/data/application/init.sql
+  app:
+    depends_on: 
+      - "mariadb"
+    image: "retailapp:4.0"
+    container_name: "retailApp1"
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
