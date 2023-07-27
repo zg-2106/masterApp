@@ -1,4 +1,5 @@
 version: '3.9'
+
 services:
   mariadb:
     image: "mariadb"
@@ -13,6 +14,8 @@ services:
     command: --init-file /data/application/init.sql
     volumes:
       - ./init.sql:/data/application/init.sql
+      - db-data:/var/lib/mysql
+
   app:
     depends_on: 
       - "mariadb"
@@ -21,4 +24,7 @@ services:
     ports:
       - "8080:8080"
     restart: on-failure
+
+volumes:
+  db-data:
 
